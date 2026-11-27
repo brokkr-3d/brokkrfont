@@ -1,0 +1,5 @@
+__pycache__/
+*.py[cod]
+# analysis output (slicer reports, toolpath maps, per-glyph SVGs); its G-code is analysis-only
+out/
+*.gcode

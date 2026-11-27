@@ -111,13 +111,22 @@ Uncovered text area, summed over all glyphs (mm²):
   caps are 0.7 × the font size (font size 11.43 mm ≈ 8 mm caps) — to be confirmed per tool in the cheat sheet.
 
 ## Test print (`tools/make_testprint.py` → `testprint/sans/`)
-- 146 × 114 × 1.2 mm plate, text in the first layer: all weights at 8 mm, Æ Ø Å æ ø å, kerning, crossings, digits,
-  look-alikes, then Regular 6 / Bold 5 / Regular 4 / Bold 3 mm. Files: PrusaSlicer 3MF (extruders assigned),
-  base + text STLs, preview, and `testprint/sans/README.md` with settings and what to look at.
-- Verified by slicing the 3MF in PrusaSlicer 2.9.6 as a two-extruder print (`tools/make_testprint.py sans --verify`):
-  the overlapping text part takes the text area cleanly (extruder 1: 0.0 mm of line inside the text, extruder 2:
-  0.0 mm outside), all 235 text parts get plastic with the recommended settings; **with Arachne defaults six
-  small dots (0.45–0.6 mm, 3–4 mm rows) get none.**
+- 146 × 114 × 2 mm plate, text 0.6 mm deep (3 layers) on the bed side: all weights at 8 mm, Æ Ø Å æ ø å, kerning,
+  crossings, digits, look-alikes, then Regular 6 / Bold 5 / Regular 4 / Bold 3 mm. `--text=` / `--plate=` change
+  the depth and thickness. Files: PrusaSlicer 3MF (extruders assigned), base + text STLs, preview of the face, and
+  `testprint/sans/README.md` with settings and what to look at.
+- The face is seen from below, so the text is mirrored left-right in the model (`bed_side()`) and reads the right
+  way round on the print. The first version (1.2 mm plate, text 0.2 mm deep) was not mirrored and came out
+  backwards (2026-11-27). The text is triangulated as it reads and then mirrored as a mesh: triangulating the
+  mirrored outlines left gaps in the faces of every B (two counters with the same right edge trip the hole
+  bridging). Every build checks that both meshes are closed.
+- Verified by slicing the 3MF in PrusaSlicer 2.9.6 as a two-extruder print (`tools/make_testprint.py sans --verify`,
+  every text layer plus the one above). With the recommended settings, including 0.4 mm perimeters, every text
+  layer has 0.0 mm of extruder-1 line inside the text and 0.0 mm of extruder-2 line outside it, all 236 text parts
+  get plastic in all three layers, and there is no text colour above 0.6 mm. With 0.45 mm perimeters (the usual
+  profile width), the two 0.45 mm dots of the Bold 3 mm row get none in layers 2–3. **With Arachne defaults, five
+  small dots (0.45–0.6 mm, 3–4 mm rows) get none on the face and six in the layers behind it.** Four filament
+  changes (layers 1–4).
 - Result of the real print: _pending_.
 
 ## Open questions

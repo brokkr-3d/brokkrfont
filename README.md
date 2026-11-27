@@ -20,11 +20,15 @@ junctions are rounded, and gaps never get narrower than a line, so the text prin
 - Design notes, measurements and slicer results: [`families/sans/NOTES.md`](families/sans/NOTES.md).
 
 ## Slicer settings for the text
-Layer and first layer 0.2 mm, first-layer line width 0.4 mm, Arachne walls, and for the text:
+Layer and first layer 0.2 mm, Arachne walls, **0.4 mm line width** for the first layer (and for the perimeters /
+walls too when the text is more than one layer deep), and for the text:
 **minimum wall/perimeter width 50 %**, **wall transitioning threshold angle 40°**, **wall transition length 40 %**
 (Bambu Studio / Orca: also *initial layer minimum wall width* 50 %). With slicer defaults, crossings in `# + t f 4`
 keep a small hole and dots under about 0.7 mm disappear. Full details in the notes and in
 [`testprint/sans/README.md`](testprint/sans/README.md).
+
+Text on the bed side is seen from below, so it has to be **mirrored left–right in the model** to read the right
+way round (the test plate already is).
 
 ## Repository layout
 ```

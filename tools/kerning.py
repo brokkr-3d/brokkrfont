@@ -1,3 +1,6 @@
+# Copyright 2026 Brokkr 3D AS (https://brokkr.design).
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL
+# was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 """Brokkr Sans 3D kerning: "slide room" autokerning with a printing floor.
 
 The spacing classes already make every glyph look right next to a straight stem (HH, nn). Kerning only fixes the

@@ -1,3 +1,6 @@
+# Copyright 2026 Brokkr 3D AS (https://brokkr.design).
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL
+# was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 """Shared loader and paths for the Brokkr 3D font families.
 
 Every tool is run as   python -I tools/<tool>.py <family> [tool arguments ...]

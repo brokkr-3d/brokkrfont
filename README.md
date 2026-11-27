@@ -61,9 +61,21 @@ python -I tools/slice_test.py sans out/sans/slicer                    # slice ev
 ## Adding Brokkr Serif 3D
 1. Copy `families/sans/` to `families/serif/`.
 2. In `families/serif/glyphs.py` set `SLUG = "serif"`, `FAMILY = "Brokkr Serif 3D"`, `PS_FAMILY = "BrokkrSerif3D"`,
-   and adjust metrics, weights and spacing.
+   and adjust metrics, weights and spacing. Keep `COPYRIGHT` / `LICENSE` (the reserved name "Brokkr" covers it).
 3. Redraw the glyph functions (keep the stroke, gap and corner rules), delete the copied `kerning.json`.
 4. Run the tools above with `serif` instead of `sans`. Everything lands in its own folders.
 
 ## Licence
-Not chosen yet — all rights reserved until a licence file is added.
+Copyright 2026 **Brokkr 3D AS** (https://brokkr.design).
+
+- **Fonts and font sources** (`fonts/`, `families/`): [SIL Open Font License 1.1](OFL.txt) with the
+  **Reserved Font Name "Brokkr"**. You may use, study, modify and share them, and bundle them with software —
+  but not sell the fonts on their own, and modified versions must stay under the OFL and may not use the name
+  "Brokkr" (rename them). Covers Brokkr Sans 3D and future Brokkr families.
+- **Tools** (`tools/`): [Mozilla Public License 2.0](tools/LICENSE). Changes to these files must be shared under
+  the MPL; they can be used inside other projects.
+- **What you make with the fonts** — prints, STL/3MF files, labels, products — is yours and not restricted by
+  either licence.
+
+Contributions are welcome under the same licences. Outside contributions to the fonts may be asked to sign a
+contributor agreement, so Brokkr 3D AS keeps the option of offering other licence terms later.

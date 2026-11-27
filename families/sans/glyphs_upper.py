@@ -1,3 +1,5 @@
+# Copyright 2026 Brokkr 3D AS (https://brokkr.design), with Reserved Font Name "Brokkr".
+# Part of the Font Software licensed under the SIL Open Font License 1.1 - see OFL.txt in the repository root.
 """Brokkr Sans 3D capitals A-Z. Each function f(K) -> (ink width, (left, right) spacing class, primitives).
 Spacing classes: S straight stem, O round side, A open arm/terminal, D diagonal extreme, or a number."""
 import math

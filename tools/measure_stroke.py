@@ -1,3 +1,6 @@
+# Copyright 2026 Brokkr 3D AS (https://brokkr.design).
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL
+# was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 """Thickest spot in every Brokkr Sans 3D glyph: 2 x the largest circle that fits inside the shape.
 A clean straight or curve is 1.0 w; junctions run about 1.2-1.5 w; diagonal joins (V, W, M feet) more.
 usage: python -I tools/measure_stroke.py <family> [Light,Regular,Bold] [chars]

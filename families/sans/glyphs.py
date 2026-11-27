@@ -1,3 +1,5 @@
+# Copyright 2026 Brokkr 3D AS (https://brokkr.design), with Reserved Font Name "Brokkr".
+# Part of the Font Software licensed under the SIL Open Font License 1.1 - see OFL.txt in the repository root.
 """Brokkr Sans 3D - monoline font for first-layer 3D-print text.
 
 Units: UPM 1000, baseline 0, y up. Cap height 700 = 8 mm at the base size.
@@ -30,7 +32,13 @@ geo = sys.modules["b3d_geom"]
 UPM, CAP, XH, ASC, DESC = 1000, 700, 550, 760, -220
 # identity of this family (used by build_ttf, specimens, test plate)
 SLUG, FAMILY, PS_FAMILY = "sans", "Brokkr Sans 3D", "BrokkrSans3D"
-VERSION, COPYRIGHT = "0.9", "Copyright 2026 Brokkr"     # copyright string: placeholder, edit as needed
+VERSION = "0.9"
+# ownership and licence: written into every font file (name table) by tools/build_ttf.py
+COPYRIGHT = 'Copyright 2026 Brokkr 3D AS (https://brokkr.design), with Reserved Font Name "Brokkr".'
+MANUFACTURER, VENDOR_URL = "Brokkr 3D AS", "https://brokkr.design"
+LICENSE = ("This Font Software is licensed under the SIL Open Font License, Version 1.1. "
+           "This license is available with a FAQ at: https://openfontlicense.org")
+LICENSE_URL = "https://openfontlicense.org"
 KERN_MANUAL = {}                                          # manual kerning overrides, e.g. {"Regular": {"LT": -60}}
 
 WEIGHTS = {"Light": 35, "Regular": 70, "Bold": 105}

@@ -1,3 +1,6 @@
+# Copyright 2026 Brokkr 3D AS (https://brokkr.design).
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL
+# was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 """Slice every Brokkr Sans 3D glyph in PrusaSlicer and score the first layer.
 
 For each weight two one-layer plates are sliced (Arachne, 0.4 mm first-layer width, 8 mm caps):

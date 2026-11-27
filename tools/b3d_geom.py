@@ -1,3 +1,6 @@
+# Copyright 2026 Brokkr 3D AS (https://brokkr.design).
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL
+# was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 """Brokkr 3D geometry engine.
 
 Glyphs are built from *primitives*: sharp polygons whose vertices carry an optional

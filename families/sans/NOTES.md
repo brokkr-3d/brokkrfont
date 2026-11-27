@@ -106,7 +106,7 @@ Uncovered text area, summed over all glyphs (mm²):
 - Vertical metrics shared by all weights: ascent 1004, descent −230 (covers the Å ring); typo 780 / −220.
 - Kerning in GPOS (`kern` feature) and a legacy `kern` table with the same pairs (Light 1,375 · Regular 1,179 ·
   Bold 996 — re-run `kerning.py` then `build_ttf.py` after changes).
-- Copyright string is a placeholder ("Copyright 2026 Brokkr") — change `COPYRIGHT` in `families/sans/glyphs.py`.
+- Ownership: Copyright 2026 Brokkr 3D AS, SIL Open Font License 1.1 with Reserved Font Name "Brokkr" (OFL.txt); written into each font (name IDs 0, 8, 11, 13, 14). Tools are MPL-2.0.
 - In a slicer: install the TTF (right-click → Install) or point the text tool at the file. Font size → cap height:
   caps are 0.7 × the font size (font size 11.43 mm ≈ 8 mm caps) — to be confirmed per tool in the cheat sheet.
 

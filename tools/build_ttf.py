@@ -1,3 +1,6 @@
+# Copyright 2026 Brokkr 3D AS (https://brokkr.design).
+# This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL
+# was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 """Build BrokkrSans3D-Light / -Regular / -Bold .ttf from the glyph drawings.
 
 python -I tools/build_ttf.py <family> [outdir]      (default: fonts/<PS family name>/)
@@ -99,13 +102,16 @@ def build(wname, outdir, ymax, ymin):
     light = wname == "Light"
     family = f"{G.FAMILY} Light" if light else G.FAMILY
     style = "Regular" if light else wname
-    fb.setupNameTable({
+    name_strings = {                                   # (not "names": that is the glyph-name map used below)
         "copyright": COPYRIGHT, "familyName": family, "styleName": style,
         "uniqueFontIdentifier": f"{VERSION};{VENDOR};{G.PS_FAMILY}-{wname}", "fullName": f"{G.FAMILY} {wname}",
         "version": f"Version {VERSION}", "psName": f"{G.PS_FAMILY}-{wname}",
         "typographicFamily": G.FAMILY, "typographicSubfamily": wname,
         "description": "Monoline font for multi-colour first-layer text in 3D printing. "
-                       "Stroke = 0.4/0.8/1.2 mm at 8 mm cap height."})
+                       "Stroke = 0.4/0.8/1.2 mm at 8 mm cap height.",
+        "manufacturer": getattr(G, "MANUFACTURER", None), "vendorURL": getattr(G, "VENDOR_URL", None),
+        "licenseDescription": getattr(G, "LICENSE", None), "licenseInfoURL": getattr(G, "LICENSE_URL", None)}
+    fb.setupNameTable({k: v for k, v in name_strings.items() if v})
     fs = 0x20 if wname == "Bold" else 0x40
     fb.setupOS2(usWeightClass=WEIGHT_CLASS[wname], usWidthClass=5, fsType=0, achVendID=VENDOR, fsSelection=fs,
                 sTypoAscender=780, sTypoDescender=-220, sTypoLineGap=max(0, asc - desc - 1000),

@@ -44,12 +44,28 @@ def two(K):
 
 
 def three(K):
-    w, C = K.w, K.CAP; W = 470; ym, xm, R = 380, 130, 160
-    Rw = 70; s = Rw + K.ri + 2
-    lower = K.mirror(K.cshape(0, 0, W, ym + w / 2, R_bl=R, R_tl=Rw, top_to=W - xm, bot_to=W), W)
-    Wu = W - s
-    upper = K.mirror(K.cshape(0, ym - w / 2, Wu, C, R_bl=None, R_tl=R, top_to=Wu, bot_to=Wu - xm), Wu)
-    return W, ("A", "O"), [lower, upper]
+    """The B's right side with open ends: rounded corners, a narrower top, the same filleted notch at the waist.
+    One outline with explicit arcs; inside corners concentric with the outside, ends rounded with rr."""
+    w, C, rr = K.w, K.CAP, K.rr; g = K.g
+    W, ym, xm = 470, 380, 130                        # width, waist height, middle bar's left end
+    Wu, R, Rm = W - 40, 160, 110                     # upper width; outer and waist corner radii
+    yl, yu = ym + w / 2, ym - w / 2
+    cl, cu = (W - Rm, yl - Rm), (Wu - Rm, yu + Rm)   # waist corner centres
+    P = g.Path((rr, 0))
+    P.L((W - R, 0)).A((W - R, R), R, 0)                              # bottom bar, bottom-right corner
+    K.waist(P, W, Wu, yl, yu, Rm, Rm)                                 # right side through the notch
+    P.L((Wu, C - R)).A((Wu - R, C - R), R, math.pi / 2)               # top-right corner, top bar
+    P.L((rr, C)).A((rr, C - rr), rr, math.pi)                         # top bar's end
+    P.L((0, C - w + rr)).A((rr, C - w + rr), rr, 3 * math.pi / 2)
+    P.L((Wu - R, C - w)).A((Wu - R, C - R), R - w, 0, ccw=False)      # inside the top-right corner
+    P.L((Wu - w, cu[1])).A(cu, Rm - w, -math.pi / 2, ccw=False)       # inside the upper waist corner
+    P.L((xm + rr, yl)).A((xm + rr, yl - rr), rr, math.pi)             # middle bar's end
+    P.L((xm, yu + rr)).A((xm + rr, yu + rr), rr, 3 * math.pi / 2)
+    P.L((cl[0], yu)).A(cl, Rm - w, 0, ccw=False)                      # inside the lower waist corner
+    P.L((W - w, R)).A((W - R, R), R - w, -math.pi / 2, ccw=False)     # inside the bottom-right corner
+    P.L((rr, w)).A((rr, w - rr), rr, math.pi)                         # bottom bar's end
+    P.L((0, rr)).A((rr, rr), rr, 3 * math.pi / 2)
+    return W, ("A", "O"), {"contours": [P.close()]}
 
 
 def four(K):

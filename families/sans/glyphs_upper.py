@@ -17,7 +17,7 @@ def _vee(K, W, H, y0=0.0, flat=1.0):
 
 
 def A(K):
-    w, C = K.w, K.CAP; W = 600
+    w, C = K.w, K.CAP; W = K.uc(600)
     (L, Rr), h, a = _vee(K, W, C)
     k = (W / 2 - a) / C                       # outer edge: x = k*y
     yb = 0.29 * C - w / 2                     # crossbar bottom
@@ -26,40 +26,51 @@ def A(K):
 
 
 def B(K):
-    w, C = K.w, K.CAP; W = 500; ym = 372
-    Rw = 70; s = Rw + K.ri + 2                # waist: step just wide enough for the lower bowl's corner
-    return W, ("S", "O"), [K.stem(0, 0, C), K.ring(0, ym - w / 2, W - s, C, tr=150),
-                           K.ring(0, 0, W, ym + w / 2, br=170, tr=Rw)]
+    """Stem and two rounded bowls sharing the waist bar, the upper one narrower. Where the bowls' waist corners
+    meet, the outline has a filleted notch, as in the 8 (explicit arcs: the union can't make a notch)."""
+    w, C, ri, rr = K.w, K.CAP, K.ri, K.rr; g = K.g
+    Wl, Wu, ym = K.uc(500), K.uc(455), 372
+    Rb, Rm, Rt = 170, 110, 150                       # bottom, waist and top corner radii
+    yl, yu = ym + w / 2, ym - w / 2                  # waist bar: lower bowl's top edge, upper bowl's bottom edge
+    P = g.Path((rr, 0))
+    P.L((Wl - Rb, 0)).A((Wl - Rb, Rb), Rb, 0)
+    K.waist(P, Wl, Wu, yl, yu, Rm, Rm)
+    P.L((Wu, C - Rt)).A((Wu - Rt, C - Rt), Rt, math.pi / 2)
+    P.L((rr, C)).A((rr, C - rr), rr, math.pi)
+    P.L((0, rr)).A((rr, rr), rr, 3 * math.pi / 2)
+    lower = g.outline([g.rect(w, w, Wl - w, yu, ri, Rb - w, Rm - w, ri)], ri, ri)[0]
+    upper = g.outline([g.rect(w, yl, Wu - w, C - w, ri, Rm - w, Rt - w, ri)], ri, ri)[0]
+    return Wl, ("S", "O"), {"contours": [P.close(), g.reverse_contour(lower), g.reverse_contour(upper)]}
 
 
 def C_(K):
-    W = 500; R = K.R_UC
+    W = K.uc(500); R = K.R_UC
     return W, ("O", "A"), [K.cshape(0, 0, W, K.CAP, R_bl=R, R_tl=R)]
 
 
 def D(K):
-    W = 520; R = K.R_UC
+    W = K.uc(520); R = K.R_UC
     return W, ("S", "O"), [K.ring(0, 0, W, K.CAP, br=R, tr=R)]
 
 
 def E(K):
-    w, C = K.w, K.CAP; W = 450
+    w, C = K.w, K.CAP; W = K.uc(450)
     return W, ("S", "A"), [K.stem(0, 0, C), K.bar(0, W, C - w), K.bar(0, W - 40, 360 - w / 2), K.bar(0, W, 0)]
 
 
 def F(K):
-    w, C = K.w, K.CAP; W = 440
+    w, C = K.w, K.CAP; W = K.uc(440)
     return W, ("S", "A"), [K.stem(0, 0, C), K.bar(0, W, C - w), K.bar(0, W - 40, 345 - w / 2)]
 
 
 def G_(K):
-    w, C = K.w, K.CAP; W = 520; R = K.R_UC; yg, xg = 380, 280
+    w, C = K.w, K.CAP; W = K.uc(520); R = K.R_UC; yg, xg = 380, K.uc(280)
     return W, ("O", "O"), [K.poly((0, 0, R), (W, 0, R), (W, yg), (xg, yg), (xg, yg - w), (W - w, yg - w),
                                   (W - w, w, R - w), (w, w, R - w), (w, C - w, R - w), (W, C - w), (W, C), (0, C, R))]
 
 
 def H(K):
-    w, C = K.w, K.CAP; W = 520
+    w, C = K.w, K.CAP; W = K.uc(520)
     return W, ("S", "S"), [K.stem(0, 0, C), K.stem(W - w, 0, C), K.rect(w / 2, C / 2 - w / 2, W - w / 2, C / 2 + w / 2)]
 
 
@@ -68,13 +79,13 @@ def I(K):
 
 
 def J(K):
-    w, C = K.w, K.CAP; W = 440; R = 160; yj = 230
+    w, C = K.w, K.CAP; W = K.uc(440); R = 160; yj = 230
     return W, ("A", "S"), [K.poly((0, 0, R), (W, 0, R), (W, C), (W - w, C), (W - w, w, R - w), (w, w, R - w),
                                   (w, yj), (0, yj))]
 
 
 def K_(K):
-    w, C = K.w, K.CAP; W = 520
+    w, C = K.w, K.CAP; W = K.uc(520)
     p_lo, p_top = (w, 0.30 * C), (W, C)
     arm = K.clip(K.edge(p_lo, p_top, "R", cut_a=("y", 0.30 * C - w)), xmin=w / 2)
     s = 0.36
@@ -85,34 +96,34 @@ def K_(K):
 
 
 def L(K):
-    w, C = K.w, K.CAP; W = 430
+    w, C = K.w, K.CAP; W = K.uc(430)
     return W, ("S", "A"), [K.stem(0, 0, C), K.bar(0, W, 0)]
 
 
 def M(K):
-    w, C = K.w, K.CAP; W = 660
+    w, C = K.w, K.CAP; W = K.uc(660)
     (L, Rr), h, b = _vee(K, W, C, y0=0.38 * C)
     return W, ("S", "S"), [K.stem(0, 0, C), K.stem(W - w, 0, C), L, Rr]
 
 
 def N(K):
-    w, C = K.w, K.CAP; W = 540
+    w, C = K.w, K.CAP; W = K.uc(540)
     d = K.tan((0, C), (W, 0), ("y", C), ("y", 0), a_side="R")
     return W, ("S", "S"), [K.stem(0, 0, C), K.stem(W - w, 0, C), d]
 
 
 def O(K):
-    W = 520; R = K.R_UC
+    W = K.uc(520); R = K.R_UC
     return W, ("O", "O"), [K.ring(0, 0, W, K.CAP, R, R, R, R)]
 
 
 def P(K):
-    w, C = K.w, K.CAP; W = 490; yb = 0.40 * C - w / 2
+    w, C = K.w, K.CAP; W = K.uc(490); yb = 0.40 * C - w / 2
     return W, ("S", "O"), [K.stem(0, 0, C), K.ring(0, yb, W, C, br=170, tr=170)]
 
 
 def Q(K):
-    w, C = K.w, K.CAP; W = 520; R = K.R_UC; e = 40
+    w, C = K.w, K.CAP; W = K.uc(520); R = K.R_UC; e = 40
     # 45-degree tail through the bottom-right corner: both corner points sit on its centreline,
     # so the corner is fully absorbed and no short edges or squeezed radii remain
     s = 170 + 0.6 * w                                # inner end stays clear of the counter walls
@@ -121,8 +132,8 @@ def Q(K):
 
 
 def R_(K):
-    w, C = K.w, K.CAP; W = 510; yb = 0.40 * C - w / 2
-    xj = max(W - 245, 3.4 * w)                       # leg meets the bowl here; keeps the gap to the stem >= w
+    w, C = K.w, K.CAP; W = K.uc(510); yb = 0.40 * C - w / 2
+    xj = max(W - K.uc(245), 3.4 * w)                 # leg meets the bowl here; keeps the gap to the stem >= w
     phi = math.atan2(yb, W - xj)
     br = min(170, (W - 10 - xj) - K.ri / math.tan(phi / 2) - 2)   # bowl corner radius that still fits
     leg = K.edge((W, 0), (xj, yb), "R", cut_a=("y", 0), cut_b=("y", yb + w / 2))
@@ -130,31 +141,31 @@ def R_(K):
 
 
 def S(K):
-    w, C = K.w, K.CAP; W = 490; R = 170; ym = 362
+    w, C = K.w, K.CAP; W = K.uc(490); R = 170; ym = 362
     return W, ("O", "O"), [K.poly((0, 0), (W, 0, R), (W, ym + w / 2, R), (w, ym + w / 2, R - w), (w, C - w, R - w),
                                   (W, C - w), (W, C), (0, C, R), (0, ym - w / 2, R), (W - w, ym - w / 2, R - w),
                                   (W - w, w, R - w), (0, w))]
 
 
 def T(K):
-    w, C = K.w, K.CAP; W = 520
+    w, C = K.w, K.CAP; W = K.uc(520)
     return W, ("A", "A"), [K.bar(0, W, C - w), K.stem(W / 2 - w / 2, 0, C - w / 2)]
 
 
 def U(K):
-    w, C = K.w, K.CAP; W = 520; R = K.R_UC
+    w, C = K.w, K.CAP; W = K.uc(520); R = K.R_UC
     return W, ("S", "S"), [K.poly((0, 0, R), (W, 0, R), (W, C), (W - w, C), (W - w, w, R - w), (w, w, R - w),
                                   (w, C), (0, C))]
 
 
 def V(K):
-    W = 580
+    W = K.uc(580)
     (L, Rr), h, b = _vee(K, W, K.CAP)
     return W, ("D", "D"), [L, Rr]
 
 
 def W_(K):
-    w, C = K.w, K.CAP; W = 840; x1 = 0.255 * W
+    w, C = K.w, K.CAP; W = K.uc(840); x1 = 0.255 * W
     b = a = 0.3 * w
     for _ in range(10):   # feet a bit wider than one stroke so the two strokes' feet never form slivers
         h1 = w / math.sin(math.atan2(C, x1 - b)); h2 = w / math.sin(math.atan2(C, W / 2 - x1))
@@ -165,19 +176,19 @@ def W_(K):
 
 
 def X(K):
-    w, C = K.w, K.CAP; W = 540
+    w, C = K.w, K.CAP; W = K.uc(540)
     d = K.tan((0, 0), (W, C), ("y", 0), ("y", C), "L")
     return W, ("D", "D"), [d, K.mirror(d, W)]
 
 
 def Y(K):
-    w, C = K.w, K.CAP; W = 580; yy = 0.40 * C; xs = W / 2 - w / 2
+    w, C = K.w, K.CAP; W = K.uc(580); yy = 0.40 * C; xs = W / 2 - w / 2
     arm = K.clip(K.edge((0, C), (xs, yy), "R", cut_b=("y", yy - w)), xmax=W / 2)
     return W, ("D", "D"), [arm, K.mirror(arm, W), K.stem(xs, 0, yy + w)]
 
 
 def Z(K):
-    w, C = K.w, K.CAP; W = 490
+    w, C = K.w, K.CAP; W = K.uc(490)
     d = K.clip(K.tan((0, w), (W, C - w), ("y", w / 2), ("y", C - w / 2), "L"), xmin=0, xmax=W)
     return W, ("A", "A"), [K.bar(0, W, 0), K.bar(0, W, C - w), d]
 

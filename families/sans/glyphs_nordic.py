@@ -86,8 +86,8 @@ def oslash(K):
 def AE(K):
     """Diagonal left leg into a vertical E stem; A crossbar low, E middle arm higher (two T-joins, no crossing)."""
     w, C = K.w, K.CAP
-    xs = 300 + 1.7 * (w - 70)                      # stem position: keeps the A-part counter >= w in Bold
-    W = xs + w + 390
+    xs = K.uc(300) + 1.7 * (w - 70)                # stem position: keeps the A-part counter >= w in Bold
+    W = xs + w + K.uc(390)
     leg = K.edge((0, 0), (xs, C), "L")              # outer edge of the leg ends at the stem's top-left
     h = w / math.sin(math.atan2(C, xs))
     yb = 0.29 * C - w / 2

@@ -12,7 +12,7 @@ Glyph drawings live in glyphs_upper.py, glyphs_lower.py and glyphs_figures.py.
 Each drawing is a function f(K) -> (ink_width, (left_space, right_space), [primitives]).
 Run:  python -I families/sans/glyphs.py   (SVG sheets -> specimens/sans, per-glyph SVGs -> out/sans/svg)
 """
-import importlib.util, json, os, sys
+import importlib.util, json, math, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -44,6 +44,7 @@ KERN_MANUAL = {}                                          # manual kerning overr
 WEIGHTS = {"Light": 35, "Regular": 70, "Bold": 105}
 CAP_MM = 8.0                     # base size: cap height in mm
 R_UC, R_LC = 180, 160            # outer corner radius of round capitals / lowercase bowls
+UC_WIDTH = 0.96                  # capitals 4 % narrower than first drawn (2026-11-27): widths only, strokes/radii kept
 SPACE = {"uc": 80, "lc": 65}     # side bearing of a straight stem
 
 
@@ -78,6 +79,28 @@ class K:
     def dot(self, x, y, d=None):
         d = self.D if d is None else d
         return geo.rect(x, y, x + d, y + d)
+
+    def uc(self, x):
+        """A width or horizontal position in a capital, narrowed by UC_WIDTH (whole units)."""
+        return round(x * UC_WIDTH)
+
+    def waist(self, P, Wl, Wu, yl, yu, Rl, Ru):
+        """Right side of two stacked bowls (B, 3), added to the outline Path P, which stands on the lower bowl's
+        right side (x = Wl): up to its waist corner (radius Rl, bowl top edge yl), into a notch filleted with ri,
+        and round the upper bowl's waist corner (radius Ru, bowl bottom edge yu) onto its right side (x = Wu).
+        The counters' corners must be concentric (Rl - w, Ru - w), so the stroke stays w."""
+        ri = self.ri
+        cl, cu = (Wl - Rl, yl - Rl), (Wu - Ru, yu + Ru)          # corner centres, lower and upper
+        ra, rb = Rl + ri, Ru + ri                                 # fillet circle touches both arcs from outside
+        d = math.dist(cl, cu); ex, ey = (cu[0] - cl[0]) / d, (cu[1] - cl[1]) / d
+        a = (ra * ra - rb * rb + d * d) / (2 * d); h = math.sqrt(ra * ra - a * a)
+        F = (cl[0] + a * ex + h * ey, cl[1] + a * ey - h * ex)    # the solution on the outside (right)
+        T1 = (cl[0] + (F[0] - cl[0]) * Rl / ra, cl[1] + (F[1] - cl[1]) * Rl / ra)
+        T2 = (cu[0] + (F[0] - cu[0]) * Ru / rb, cu[1] + (F[1] - cu[1]) * Ru / rb)
+        ang = lambda p, c: math.atan2(p[1] - c[1], p[0] - c[0])
+        if not (0 < ang(T1, cl) < math.pi / 2 and -math.pi / 2 < ang(T2, cu) < 0):
+            raise ValueError("waist notch does not fit between the two corner arcs")
+        return P.L((Wl, cl[1])).A(cl, Rl, ang(T1, cl)).A(F, ri, ang(T2, F), ccw=False).A(cu, Ru, 0)
 
 
 SETS = ("glyphs_upper", "glyphs_lower", "glyphs_figures", "glyphs_nordic")

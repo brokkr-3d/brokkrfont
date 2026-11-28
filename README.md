@@ -15,7 +15,7 @@ junctions are rounded, and gaps never get narrower than a line, so the text prin
 - 101 characters: A–Z, a–z, Æ Ø Å æ ø å, 0–9 and all printable ASCII punctuation.
 - Strokes at **8 mm caps**: Light 0.4 mm (1 line) · Regular 0.8 mm (2 lines) · Bold 1.2 mm (3 lines).
   Caps are 0.7 em, so if your tool's size is the em size, size 11.43 mm gives 8 mm caps (tools differ — check).
-- Kerned (about 1,000–1,400 pairs per weight), with a printing floor: letters never come closer than the stroke
+- Kerned (about 950–1,400 pairs per weight), with a printing floor: letters never come closer than the stroke
   width plus 30 units, so the background colour still prints between them. Digits are not kerned.
 - Design notes, measurements and slicer results: [`families/sans/NOTES.md`](families/sans/NOTES.md).
 

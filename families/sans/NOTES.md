@@ -10,7 +10,7 @@ Stroke width is a line width in XY, so it should come out as whole 0.4 mm nozzle
 - **Fonts built** (v0.9): `fonts/BrokkrSans3D/BrokkrSans3D-Light.ttf`, `-Regular.ttf`, `-Bold.ttf`, checked by `check_ttf.py`.
 - Every glyph is **sliced in PrusaSlicer 2.9.6** (Arachne, 0.4 mm first-layer width, 8 mm caps), both as text
   and as the background plate around it, and scored automatically (see "Slicer test 2").
-- **Kerned** (2026-11-27): about 800–1,100 pairs per weight in `kerning.json`, checked visually and in the slicer.
+- **Kerned** (2026-11-27): about 950–1,400 pairs per weight in `kerning.json`, checked visually and in the slicer.
 - Not done yet: Bambu Studio / Orca check, the cheat sheet, a real test print.
 
 ## Files
@@ -51,7 +51,11 @@ to `out/` (not committed); its G-code is analysis-only (no homing/heating) and m
 - Squared, technical style (Eurostile/DIN family feel). Two-storey a, single-storey g with squared hook; y uses the same hook.
 - **l has a tail**, I is a plain stem, 1 has a flag: `lIl1|` are all distinct. 0 is narrower than O.
 - 8 is two stacked rounded boxes with a filleted notch at the waist (built with explicit arcs).
-- B and 3: upper bowl narrower; lower bowl's waist corner radius 70 so it fits the step.
+- B and 3 (redrawn 2026-11-27): rounded bowls like P and R, upper bowl narrower, and where the two waist corners
+  meet (radius 110) the outline has the 8's filleted notch, built with explicit arcs (`K.waist()`). The 3 is the
+  B's right side with open ends. The earlier stepped waist (square upper corner on a small ledge) looked foreign.
+- Capitals are 4 % narrower than first drawn (`UC_WIDTH = 0.96` in `glyphs.py`, 2026-11-27): each capital's width
+  and width-tied positions go through `K.uc()`; strokes, radii, heights and spacing are unchanged.
 - Q: 45° tail through the bottom-right corner. R: diagonal leg; junction moves out in Bold to keep the gap ≥ w.
 - &: classic form — closed upper loop, lower bowl ending in a tail, 45° leg crossing it. Tight but legible in Bold.
 - **Å** ring sits on the A's apex (no thin gap to fuse, saves height); **å** ring floats one stroke above the a.
@@ -67,13 +71,13 @@ to `out/` (not committed); its G-code is analysis-only (no homing/heating) and m
 - **Method, "slide room":** spacing already makes every glyph right next to a straight stem, so kerning only fixes
   how two shapes interlock. Per pair, the gap is measured every 5 units of height where both glyphs have ink;
   slide room = smallest row gap minus the gap between the two glyphs' edges (edges judged at or above the
-  baseline). Kern = −½ × slide room. HT, AA, oo and nn get 0; AV −120, AT −115, LT −110, To −110, P. −100 (Regular).
+  baseline). Kern = −½ × slide room. HT, AA, oo and nn get 0; AV −115, AT −105, LT −105, To −105, P. −100 (Regular).
 - **Printing floor:** after kerning, the two inks stay ≥ w + 30 units apart in 2D, the same floor as the spacing,
   so the background colour always prints between letters. The floor also adds positive kerns where descenders would
-  clash (gj, yj, qj, jj: +65…+115).
+  clash (gj, yj, qj, jj: +55…+115).
 - **Guards:** no sliding into a space closed above and below (a hyphen into C or S); caps of −130 for letter pairs
   and −100 with punctuation; **digits are not kerned**, so number columns on labels line up.
-- Pairs: Light 1,375 · Regular 1,179 · Bold 996 (incl. Æ Ø Å æ ø å). Manual overrides go in `KERN_MANUAL` in `families/sans/glyphs.py`. Re-run it after
+- Pairs: Light 1,374 · Regular 1,179 · Bold 965 (incl. Æ Ø Å æ ø å). Manual overrides go in `KERN_MANUAL` in `families/sans/glyphs.py`. Re-run it after
   any change to shapes or spacing.
 - Slicer check (kerned words AVATAR, Today, P.F.T., WAVY, Fjord, enjoy, gjyjqj, LTA, 'A'): background between
   letters prints everywhere; uncovered text Light 0.04 / Regular 0 / Bold 1.0 mm² (Bold's known junction specks).
@@ -97,6 +101,9 @@ Uncovered text area, summed over all glyphs (mm²):
   considered and **declined (2026-11-27): Bold stays as drawn**, keeping the rounded inside corners.
 - Background voids near glyphs are small and only recessed (layer 2 is the same colour), so they don't show.
 - Remaining junction "thickest spots" are 1.2–1.9 w (inherent to joins); the asterisk centre is 2.4 w.
+- Re-run 2026-11-27 after the new B and 3 and the 4 % narrower capitals (all 101 glyphs, recommended settings):
+  uncovered text Light 0.32 · Regular 0.27 · Bold 3.9 mm² (before: 0.29 · 0.28 · 4.19), nothing dropped; B and 3
+  have no uncovered text in any weight. Per-glyph changes are within ±0.06 mm² (slicer noise level).
 
 ## Font files (`tools/build_ttf.py`, v0.9)
 - 102 glyphs (101 characters + .notdef), AGL glyph names, outers clockwise, no overlapping or crossing contours.
@@ -104,14 +111,14 @@ Uncovered text area, summed over all glyphs (mm²):
 - Naming: Regular + Bold = family "Brokkr Sans 3D" (style-linked); Light = family "Brokkr Sans 3D Light" so Windows menus
   list it; all three share the typographic family "Brokkr Sans 3D" (Light / Regular / Bold).
 - Vertical metrics shared by all weights: ascent 1004, descent −230 (covers the Å ring); typo 780 / −220.
-- Kerning in GPOS (`kern` feature) and a legacy `kern` table with the same pairs (Light 1,375 · Regular 1,179 ·
-  Bold 996 — re-run `kerning.py` then `build_ttf.py` after changes).
+- Kerning in GPOS (`kern` feature) and a legacy `kern` table with the same pairs (Light 1,374 · Regular 1,179 ·
+  Bold 965 — re-run `kerning.py` then `build_ttf.py` after changes).
 - Ownership: Copyright 2026 Brokkr 3D AS, SIL Open Font License 1.1 with Reserved Font Name "Brokkr" (OFL.txt); written into each font (name IDs 0, 8, 11, 13, 14). Tools are MPL-2.0.
 - In a slicer: install the TTF (right-click → Install) or point the text tool at the file. Font size → cap height:
   caps are 0.7 × the font size (font size 11.43 mm ≈ 8 mm caps) — to be confirmed per tool in the cheat sheet.
 
 ## Test print (`tools/make_testprint.py` → `testprint/sans/`)
-- 146 × 114 × 2 mm plate, text 0.6 mm deep (3 layers) on the bed side: all weights at 8 mm, Æ Ø Å æ ø å, kerning,
+- 144 × 114 × 2 mm plate, text 0.6 mm deep (3 layers) on the bed side: all weights at 8 mm, Æ Ø Å æ ø å, kerning,
   crossings, digits, look-alikes, then Regular 6 / Bold 5 / Regular 4 / Bold 3 mm. `--text=` / `--plate=` change
   the depth and thickness. Files: PrusaSlicer 3MF (extruders assigned), base + text STLs, preview of the face, and
   `testprint/sans/README.md` with settings and what to look at.

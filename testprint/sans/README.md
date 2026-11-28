@@ -1,6 +1,6 @@
 # Brokkr Sans 3D – test print
 
-A 146 × 114 × 2 mm plate with the text **0.6 mm deep (3 layers)** in a second colour, on the face that touches
+A 144 × 114 × 2 mm plate with the text **0.6 mm deep (3 layers)** in a second colour, on the face that touches
 the bed. Print it as it lies, text side down. **The text is mirrored in the files:** in the slicer, seen from
 above, it reads backwards; on the finished face, seen from below, it reads the right way round. Don't mirror it
 again. Made by `tools/make_testprint.py sans` (other depths, for example `--text=0.4 --plate=1.6`);
